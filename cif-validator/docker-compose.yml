@@ -1,0 +1,8 @@
+version: '3'
+services:
+  tools-example:
+    build: .
+    ports:
+     - "8091:80"
+    container_name: tools-example-instance
+    image: tools-example
