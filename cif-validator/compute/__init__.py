@@ -1,6 +1,8 @@
 import logging
 import flask
 from flask import Blueprint
+import pycodcif
+import os
 blueprint = Blueprint('compute', __name__, url_prefix='/compute')
 
 logger = logging.getLogger('tools-app')
@@ -27,3 +29,12 @@ def process_structure_example():
         return "This was a POST"
     else:
         return "This was a GET"
+
+
+@blueprint.route('/validate/', methods=['GET', 'POST'])
+def validate():
+    if flask.request.method == 'POST':
+        file = flask.request.files['cif']
+        file.save('test.cif')
+        data, _, _ = pycodcif.parse('test.cif')
+        return str(data)
