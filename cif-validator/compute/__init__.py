@@ -36,5 +36,8 @@ def validate():
     if flask.request.method == 'POST':
         file = flask.request.files['cif']
         file.save('test.cif')
-        data, _, _ = pycodcif.parse('test.cif')
+        try:
+            data, _, _ = pycodcif.parse('test.cif')
+        except:
+            return 'Please submit a CIF file.'
         return str(data)
