@@ -3,6 +3,7 @@ import flask
 from flask import Blueprint
 import pycodcif
 import os
+import json
 blueprint = Blueprint('compute', __name__, url_prefix='/compute')
 
 logger = logging.getLogger('tools-app')
@@ -40,4 +41,4 @@ def validate():
             data, _, _ = pycodcif.parse('test.cif')
         except:
             return 'Please submit a CIF file.'
-        return str(data)
+        return json.dumps(data)
