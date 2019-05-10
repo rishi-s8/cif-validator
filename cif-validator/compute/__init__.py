@@ -4,6 +4,7 @@ from flask import Blueprint
 import pycodcif
 import os
 import json
+import random
 blueprint = Blueprint('compute', __name__, url_prefix='/compute')
 
 logger = logging.getLogger('tools-app')
@@ -36,9 +37,10 @@ def process_structure_example():
 def validate():
     if flask.request.method == 'POST':
         file = flask.request.files['cif']
-        file.save('test.cif')
+        filename = ("testfile_" + str(random.randint(1, 1000000)) + ".cif")
+        file.save(filename)
         try:
-            data, err_count, err_msg = pycodcif.parse('test.cif')
+            data, err_count, err_msg = pycodcif.parse(filename)
             data[0]['err_count'] = err_count
             data[0]['err_msg'] = err_msg
         except Exception as e:
