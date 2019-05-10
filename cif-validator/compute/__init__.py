@@ -3,6 +3,7 @@ import flask
 from flask import Blueprint
 import pycodcif
 import os
+import json
 blueprint = Blueprint('compute', __name__, url_prefix='/compute')
 
 logger = logging.getLogger('tools-app')
@@ -37,7 +38,9 @@ def validate():
         file = flask.request.files['cif']
         file.save('test.cif')
         try:
-            data, _, _ = pycodcif.parse('test.cif')
+            data, err_count, err_msg = pycodcif.parse('test.cif')
+            data[0]['err_count'] = err_count
+            data[0]['err_msg'] = err_msg
         except:
             return 'Please submit a CIF file.'
-        return str(data)
+        return json.dumps(data)
