@@ -41,6 +41,8 @@ def validate():
             data, err_count, err_msg = pycodcif.parse('test.cif')
             data[0]['err_count'] = err_count
             data[0]['err_msg'] = err_msg
-        except:
-            return 'Please submit a CIF file.'
+        except Exception as e:
+            e = str(e).replace("\n", " ")
+            error = 'Failed to parse the cif file: ' + e
+            data = [{'err_msg': error, }]
         return json.dumps(data)
