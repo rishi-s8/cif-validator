@@ -47,4 +47,10 @@ def validate():
             e = str(e).replace("\n", " ")
             error = 'Failed to parse the cif file: ' + e
             data = [{'err_msg': error, }]
+        try:
+            os.remove(filename)
+        except Exception as e:
+            e = str(e).replace("\n", " ")
+            error = 'Error: ' + e
+            data = [{'err_msg': error, }]
         return json.dumps(data)
