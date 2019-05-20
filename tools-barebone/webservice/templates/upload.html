@@ -1,1 +1,44 @@
-<!-- Here goes the HTML file for uploading -->
+<!DOCTYPE html>
+<html>
+    <head><title>CIF-Validator</title>
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  </head>
+    <body>
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+              <div class="navbar-header">
+                <a class="navbar-brand">CIF - Validator </a>
+              </div>
+              <ul class="nav navbar-nav">
+                <li class="active"><a href="/">Home</a></li>
+                <li><a href="upload">Upload file</a></li>
+                <li><a href="view">View files</a></li>
+              </ul>
+            </div>
+          </nav>
+
+          <div class="jumbotron text-center">
+              <h1> Validate your cif files </h1>
+              <form action="/compute/validate/" id="upload-form" method="POST" enctype="multipart/form-data">
+                  <div class="form-group">
+                    <label for="cif-file">Upload your file:</label>
+                    <input type="file" id="cif" name="cif" style="max-width: 500px;
+                    margin: auto;">
+                  </div>
+                  <div class="container">
+                  <h2>Choose validating options:</h2>
+                  <div class="custom-control custom-checkbox">
+                          <input type="checkbox" class="custom-control-input" id="defaultUnchecked">
+                          <label class="custom-control-label" for="defaultUnchecked">Option 1</label><tab>
+                          <input type="checkbox" class="custom-control-input" id="defaultUnchecked">
+                          <label class="custom-control-label" for="defaultUnchecked">Option 2</label>
+                      </div></div><br>
+                  <button type="submit" class="btn btn-default" >Submit</button>
+                </form>
+                  </div>
+    </body>
+</html>
