@@ -54,3 +54,8 @@ def validate():
             error = 'Error: ' + e
             data = [{'err_msg': error, }]
         return json.dumps(data)
+
+@blueprint.route('/')
+def index():
+    return flask.render_template('upload.html')
+
