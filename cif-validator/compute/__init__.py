@@ -40,7 +40,10 @@ def validate():
         filename = ("testfile_" + str(random.randint(1, 1000000)) + ".cif")
         file.save(filename)
         try:
-            data, err_count, err_msg = pycodcif.parse(filename)
+            conf = {}
+            for option in flask.request.form.items():
+                conf[option[0]] = 1
+            data, err_count, err_msg = pycodcif.parse(filename, conf)
             data[0]['err_count'] = err_count
             data[0]['err_msg'] = err_msg
         except Exception as e:
@@ -54,6 +57,7 @@ def validate():
             error = 'Error: ' + e
             data = [{'err_msg': error, }]
         return json.dumps(data)
+
 
 @blueprint.route('/')
 def index():
