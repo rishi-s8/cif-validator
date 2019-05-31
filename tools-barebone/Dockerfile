@@ -46,8 +46,18 @@ RUN apt-get update \
     libpcre3 \
     libpcre3-dev \
     swig \
+    mysql-server \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get clean all
+
+ADD cif.sql /tmp/dump.sql
+
+RUN mkdir -p /var/run/mysqld && \
+  chown mysql:mysql /var/run/mysqld && \
+  /bin/bash -c "/usr/bin/mysqld_safe --skip-grant-tables &" && \
+  sleep 5 && \
+  mysql -u root -e "CREATE DATABASE cif_validator" && \
+  mysql -u root cif_validator < /tmp/dump.sql
 
 # set $HOME
 ENV HOME /home/app
