@@ -12,6 +12,7 @@ standard_library.install_aliases()
 
 import flask
 import os
+from flask_mysqldb import MySQL
 
 from web_module import (ReverseProxied, static_bp, user_static_bp, get_secret_key, get_config)
 from conf import (FlaskRedirectException, ConfigurationError, static_folder)
@@ -47,6 +48,12 @@ app = flask.Flask(__name__, static_folder=static_folder)
 app.use_x_sendfile = True
 app.wsgi_app = ReverseProxied(app.wsgi_app)
 app.secret_key = get_secret_key()
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_DB'] = 'cif_validator'
+
+mysql = MySQL(app)
 
 def get_visualizer_select_template(request):
     if get_style_version(request) == 'lite':

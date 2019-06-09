@@ -2,12 +2,36 @@ import logging
 import flask
 from flask import Blueprint
 import pycodcif
-import os
+import os, sys
 import json
 import random
+from flask_paginate import Pagination, get_page_parameter
+lib_path = os.path.abspath(os.path.join('..', 'tools-barebone', 'webservice'))
+sys.path.append(lib_path)
+from run_app import mysql
 blueprint = Blueprint('compute', __name__, url_prefix='/compute')
 
 logger = logging.getLogger('tools-app')
+users = list(range(45947))
+
+
+def get_users(offset=0, per_page=50):
+    return users[offset: offset + per_page]
+
+@blueprint.route('/database', defaults={'page':1})
+@blueprint.route('/database/page/<int:page>')
+def database(page):
+    page, per_page, offset = get_page_args(page_parameter='page', per_page_parameter='per_page')
+    total = len(users)
+    pagination_users = get_users(offset=offset, per_page=per_page)
+    pagination = Pagination(page=page, per_page=per_page, total=total, css_framework='bootstrap4')
+    #Create Cursor
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT ID, URL FROM cif;', (startat,perpage))
+    #Close Connection
+    cur.close()
+    data = list(cur.fetchall())
+    return flask.render_template('db.html', users=pagination_users, page=page, per_page=per_page, pagination=pagination, data = data)
 
 @blueprint.route('/process_structure/', methods=['GET', 'POST'])
 def process_structure():
@@ -62,4 +86,3 @@ def validate():
 @blueprint.route('/')
 def index():
     return flask.render_template('upload.html')
-

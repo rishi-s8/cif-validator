@@ -47,6 +47,7 @@ RUN apt-get update \
     libpcre3-dev \
     swig \
     mysql-server \
+    libmysqlclient-dev \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get clean all
 
