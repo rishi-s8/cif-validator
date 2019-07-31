@@ -43,9 +43,6 @@ RUN apt-get update \
     apache2 \
     libapache2-mod-xsendfile \
     libapache2-mod-wsgi-py3 \
-    libpcre3 \
-    libpcre3-dev \
-    swig \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get clean all
 

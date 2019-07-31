@@ -9,57 +9,51 @@ blueprint = Blueprint('compute', __name__, url_prefix='/compute')
 
 logger = logging.getLogger('tools-app')
 
-@blueprint.route('/process_structure/', methods=['GET', 'POST'])
-def process_structure():
-    if flask.request.method == 'POST':
-        structurefile = flask.request.files['structurefile']
-        fileformat = flask.request.form.get('fileformat', 'unknown')
-        filecontent = structurefile.read().decode('utf-8')
-
-        try:
-            return "FORMAT: {}<br>CONTENT:<br><code><pre>{}</pre></code>".format(fileformat, filecontent)
-        except Exception:
-            flask.flash("Unable to process the data, sorry...")
-            return flask.redirect(flask.url_for('input_data'))
-    else:
-        return flask.redirect(flask.url_for('compute.process_structure_example'))
-
-
-@blueprint.route('/process_example_structure/', methods=['GET', 'POST'])
-def process_structure_example():
-    if flask.request.method == 'POST':
-        return "This was a POST"
-    else:
-        return "This was a GET"
-
 
 @blueprint.route('/validate/', methods=['GET', 'POST'])
 def validate():
+    """
+    API Route for validation
+
+    Parameters: Accepts a file with key 'cif' via POST
+    Function: Validates the file using PyCodCIF
+    Response: A JSON Object containing the key 'status' which may hold the values 'valid' or 'error', and the key 'message'.
+    """
+
     if flask.request.method == 'POST':
-        file = flask.request.files['cif']
-        filename = ("testfile_" + str(random.randint(1, 1000000)) + ".cif")
-        file.save(filename)
+        # The request method is POST
+        file = flask.request.files['cif'] # The file must have the key 'cif'
+        filename = ("testfile_" + str(random.randint(1, 1000000)) + ".cif") # Generate Filename
+        file.save(filename) # Save the file, PyCodCIF reads only saved files
+        response = {'status': '', 'message': []}
         try:
             conf = {}
             for option in flask.request.form.items():
                 conf[option[0]] = 1
             data, err_count, err_msg = pycodcif.parse(filename, conf)
-            data[0]['err_count'] = err_count
-            data[0]['err_msg'] = err_msg
+            response['status']='valid'
+            response['message'].append(err_msg)
         except Exception as e:
+            # Pycodcif could not parse the file
             e = str(e).replace("\n", " ")
             error = 'Failed to parse the cif file: ' + e
-            data = [{'err_msg': error, }]
+            response['status']='error'
+            response['message'].append(error)
         try:
+            # Remove saved file
             os.remove(filename)
         except Exception as e:
             e = str(e).replace("\n", " ")
-            error = 'Error: ' + e
-            data = [{'err_msg': error, }]
-        return json.dumps(data)
+            response['message'].append(error)
+        return json.dumps(response) # Return JSON
 
 
 @blueprint.route('/')
 def index():
+    """
+    Index Route
+
+    Function: Renders the upload page
+    """
     return flask.render_template('upload.html')
 
