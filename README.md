@@ -35,9 +35,24 @@ cd ../cif-validator
 ./run-docker.sh
 ```
 
-7. Visit http://127.0.0.1:8015. The port may vary depending on the machine. This may be confirmed from the output of the previous step.
+7. Visit http://127.0.0.1:8091 to check if the server started. The port may vary depending on the machine. This may be confirmed from the output of the previous step. The page might show `500 Internal Server Error`. Thats because the API uses a different URL (Look at the following steps).
 
+## Testing
+For testing, make sure that the server is running first.
+
+1. Go to ```cif-validator/testing``` and install the required dependencies.
+```console
+pip install -r requirements.txt
+```
+2. To test the API, Run
+```console
+pytest
+```
+If both the tests pass, you are good to go :)
+<br> Else, check the if all the requirements were installed correctly.
 
 ## Using REST API
 
-Send a file with POST request and parameter name as ```cif``` to http://127.0.0.1:8015/compute/validate.
+Send a file with POST request and parameter name as ```cif``` to http://127.0.0.1:8091/compute/.
+
+Upload your own ```cif``` file or pick an example from the ones provided.
