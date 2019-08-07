@@ -1,6 +1,6 @@
 # CIF VALIDATOR
 
-This is a tool comprising of REST API to validate CIF files using PyCodCIF
+This is a tool comprising of REST API to validate CIF files using PyCodCIF.
 
 ## Deploy on Docker
 
@@ -51,8 +51,10 @@ pytest
 If both the tests pass, you are good to go :)
 <br> Else, check the if all the requirements were installed correctly.
 
-## Using REST API
+## Using the TOOL
 
-Send a file with POST request and parameter name as ```cif``` to http://127.0.0.1:8091/compute/.
+##### Method 1
+Send a `cif` file using POST request and parameter name as `cif` to http://127.0.0.1:8091/compute/validate/.
 
-Upload your own ```cif``` file or pick an example from the ones provided.
+##### Method 2
+Use the web page http://127.0.0.1:8091/compute/ to upload your own `cif` file or pick an example from the ones provided.
