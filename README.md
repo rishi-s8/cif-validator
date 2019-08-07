@@ -58,3 +58,5 @@ Send a `cif` file using POST request and parameter name as `cif` to http://127.0
 
 ##### Method 2
 Use the web page http://127.0.0.1:8091/compute/ to upload your own `cif` file or pick an example from the ones provided.
+
+Both these methods return a ```JSON``` object containing the key **status**, which may hold the values *valid* or *error* , and the key **message** which may *describe the error in case there is*```.
